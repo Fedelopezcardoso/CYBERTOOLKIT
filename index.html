@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBER-TOOLKIT // Security & Network Intelligence</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="cyber-container">
+        <!-- HEADER -->
+        <header class="cyber-header">
+            <div class="brand">
+                <i class="fa-solid fa-shield-halved brand-icon"></i>
+                <div class="brand-text">
+                    <h1>CYBER<span class="highlight">TOOLKIT</span></h1>
+                    <p class="subtitle">NETWORK INTELLIGENCE & RECON DASHBOARD</p>
+                </div>
+            </div>
+            <div class="status-panel">
+                <span class="status-indicator online"></span>
+                <span class="status-text">SYSTEM READY // GITHUB PAGES ACTIVE</span>
+            </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="cyber-nav">
+            <button class="nav-btn active" data-tab="tab-dns">
+                <i class="fa-solid fa-network-wired"></i>
+                <span>DNS & NSLOOKUP</span>
+            </button>
+            <button class="nav-btn" data-tab="tab-scanner">
+                <i class="fa-solid fa-radar"></i>
+                <span>PORT SCANNER</span>
+            </button>
+            <button class="nav-btn" data-tab="tab-geoloc">
+                <i class="fa-solid fa-earth-americas"></i>
+                <span>IP GEOLOCATION</span>
+            </button>
+        </nav>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="cyber-content">
+
+            <!-- TAB 1: DNS & NSLOOKUP (DoH) -->
+            <section id="tab-dns" class="tab-pane active">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-magnifying-glass"></i> DNS & NSLOOKUP (DoH Engine)</h2>
+                    <p>Consulta todos los registros e IPs resueltas especificando cualquier proveedor DoH sin pasar por la DNS de tu VPN.</p>
+                </div>
+
+                <div class="grid-2col">
+                    <!-- Form Control -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-sliders"></i> Configuración de Consulta</h3>
+                        <form id="dns-form">
+                            <div class="form-group">
+                                <label for="dns-target">Domain or Hostname</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-globe input-icon"></i>
+                                    <input type="text" id="dns-target" placeholder="ej. google.com, speedtest.net" required value="speedtest.net">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="dns-server">Servidor DNS (Proveedor DoH)</label>
+                                <div class="select-wrapper">
+                                    <i class="fa-solid fa-server select-icon"></i>
+                                    <select id="dns-server">
+                                        <option value="cloudflare">Cloudflare DNS (1.1.1.1 DoH)</option>
+                                        <option value="google" selected>Google Public DNS (8.8.8.8 DoH)</option>
+                                        <option value="quad9">Quad9 Secure DNS (9.9.9.9 DoH)</option>
+                                        <option value="adguard">AdGuard DNS (DoH)</option>
+                                        <option value="custom">Servidor DoH Personalizado...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group hidden" id="custom-doh-group">
+                                <label for="dns-custom-url">URL del Endpoint DoH Personalizado</label>
+                                <input type="url" id="dns-custom-url" placeholder="https://tu-dns-doh.com/dns-query">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tipos de Registros DNS</label>
+                                <div class="checkbox-grid">
+                                    <label class="cyber-checkbox"><input type="checkbox" name="dns-type" value="A" checked> <span>A (IPv4)</span></label>
+                                    <label class="cyber-checkbox"><input type="checkbox" name="dns-type" value="AAAA" checked> <span>AAAA (IPv6)</span></label>
+                                    <label class="cyber-checkbox"><input type="checkbox" name="dns-type" value="MX" checked> <span>MX (Mail)</span></label>
+                                    <label class="cyber-checkbox"><input type="checkbox" name="dns-type" value="NS" checked> <span>NS (Nameserver)</span></label>
+                                    <label class="cyber-checkbox"><input type="checkbox" name="dns-type" value="TXT" checked> <span>TXT (SPF/DKIM)</span></label>
+                                    <label class="cyber-checkbox"><input type="checkbox" name="dns-type" value="CNAME" checked> <span>CNAME</span></label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="cyber-btn primary">
+                                <i class="fa-solid fa-play"></i> EJECUTAR NSLOOKUP
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- DNS Results -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-list-check"></i> Resultados de Registros DNS</h3>
+                        <div id="dns-results" class="results-container">
+                            <div class="placeholder-msg">
+                                <i class="fa-solid fa-terminal"></i>
+                                <p>Ingresa un dominio y presiona "EJECUTAR NSLOOKUP" para ver la respuesta detallada.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- TAB 2: PORT SCANNER -->
+            <section id="tab-scanner" class="tab-pane">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-radar"></i> Client-Side Web Port Scanner</h2>
+                    <p>Sonda de tiempos HTTP/HTTPS/CORS para analizar disponibilidad de servicios en un objetivo.</p>
+                </div>
+
+                <div style="background: rgba(0, 168, 255, 0.08); border: 1px solid rgba(0, 243, 255, 0.25); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.82rem; color: var(--text-muted); display: flex; gap: 0.75rem; align-items: center;">
+                    <i class="fa-solid fa-circle-info" style="color: var(--neon-cyan); font-size: 1.2rem;"></i>
+                    <div>
+                        <strong style="color: var(--neon-cyan);">¿Cómo funciona este escáner en el navegador?</strong><br>
+                        El navegador detecta puertos <strong>Abiertos</strong> cuando el servicio responde o confirma conexión TCP/HTTPS (incluso con restricciones CORS/SSL), <strong>Cerrados</strong> cuando la conexión es rechazada por el socket (TCP RST instantáneo), y <strong>Filtrados</strong> cuando la petición agota el tiempo de espera (Timeout de Firewall).
+                    </div>
+                </div>
+
+                <div class="grid-2col">
+                    <!-- Scanner Form -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-crosshairs"></i> Parámetros de Escaneo</h3>
+                        <form id="scanner-form">
+                            <div class="form-group">
+                                <label for="scan-target">IP o Hostname Objetivo</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-bullseye input-icon"></i>
+                                    <input type="text" id="scan-target" placeholder="ej. 127.0.0.1, portquiz.net" required value="portquiz.net">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Preajustes de Puertos</label>
+                                <div class="radio-group">
+                                    <label class="cyber-radio">
+                                        <input type="radio" name="port-preset" value="common" checked>
+                                        <span>Puertos Web & Comunes (80, 443, 8080, 8443, 21, 22, 3000, 5000, 8000)</span>
+                                    </label>
+                                    <label class="cyber-radio">
+                                        <input type="radio" name="port-preset" value="databases">
+                                        <span>Bases de Datos & Servicios (3306, 5432, 27017, 6379, 1433)</span>
+                                    </label>
+                                    <label class="cyber-radio">
+                                        <input type="radio" name="port-preset" value="custom">
+                                        <span>Personalizado</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group hidden" id="custom-ports-group">
+                                <label for="custom-ports">Puertos (separados por coma o rangos)</label>
+                                <input type="text" id="custom-ports" placeholder="ej. 80, 443, 8000-8010">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="scan-timeout">Timeout de Sonda por Puerto (ms)</label>
+                                <input type="range" id="scan-timeout" min="500" max="5000" step="500" value="2000">
+                                <span class="range-val" id="timeout-display">2000 ms</span>
+                            </div>
+
+                            <button type="submit" class="cyber-btn primary" id="btn-start-scan">
+                                <i class="fa-solid fa-radar"></i> INICIAR ESCANEO DE PUERTOS
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Scan Results & Progress -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-chart-simple"></i> Estado del Escaneo</h3>
+                        
+                        <div class="scan-progress-container hidden" id="scan-progress-box">
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar" id="scan-progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span id="scan-status-text">Escaneando...</span>
+                                <span id="scan-percentage">0%</span>
+                            </div>
+                        </div>
+
+                        <div id="scan-results-list" class="results-container">
+                            <div class="placeholder-msg">
+                                <i class="fa-solid fa-network-wired"></i>
+                                <p>Configura un objetivo y presiona "INICIAR ESCANEO" para analizar los puertos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- TAB 3: IP GEOLOCATION -->
+            <section id="tab-geoloc" class="tab-pane">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-earth-americas"></i> IP Geolocation & ASN Intelligence</h2>
+                    <p>Ubica cualquier dirección IP pública en el mapa global con información detallada del ISP.</p>
+                </div>
+
+                <div class="grid-layout-geoloc">
+                    <!-- Form & Details -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-location-dot"></i> Consultar Dirección IP</h3>
+                        <form id="geoloc-form">
+                            <div class="form-group">
+                                <label for="geo-target">Dirección IP (Dejar en blanco para tu IP actual)</label>
+                                <div class="input-group">
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-network-wired input-icon"></i>
+                                        <input type="text" id="geo-target" placeholder="ej. 8.8.8.8, 1.1.1.1 o tu IP">
+                                    </div>
+                                    <button type="button" class="cyber-btn secondary" id="btn-my-ip">
+                                        <i class="fa-solid fa-user-gear"></i> MI IP
+                                    </button>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="cyber-btn primary">
+                                <i class="fa-solid fa-compass"></i> GEOLOCALIZAR IP
+                            </button>
+                        </form>
+
+                        <div class="geo-details-grid hidden" id="geo-details-container">
+                            <div class="geo-card">
+                                <span class="geo-label"><i class="fa-solid fa-flag"></i> País / Región</span>
+                                <span class="geo-value" id="geo-country">-</span>
+                            </div>
+                            <div class="geo-card">
+                                <span class="geo-label"><i class="fa-solid fa-city"></i> Ciudad</span>
+                                <span class="geo-value" id="geo-city">-</span>
+                            </div>
+                            <div class="geo-card">
+                                <span class="geo-label"><i class="fa-solid fa-building"></i> ISP / Proveedor</span>
+                                <span class="geo-value" id="geo-isp">-</span>
+                            </div>
+                            <div class="geo-card">
+                                <span class="geo-label"><i class="fa-solid fa-sitemap"></i> ASN</span>
+                                <span class="geo-value" id="geo-asn">-</span>
+                            </div>
+                            <div class="geo-card">
+                                <span class="geo-label"><i class="fa-solid fa-map-pin"></i> Coordenadas</span>
+                                <span class="geo-value" id="geo-coords">-</span>
+                            </div>
+                            <div class="geo-card">
+                                <span class="geo-label"><i class="fa-solid fa-clock"></i> Zona Horaria</span>
+                                <span class="geo-value" id="geo-timezone">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Map -->
+                    <div class="cyber-card map-card">
+                        <h3 class="card-title"><i class="fa-solid fa-map-location-dot"></i> Mapa Global de Ubicación</h3>
+                        <div id="leaflet-map" class="map-container"></div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- TERMINAL LOGS FOOTER -->
+        <footer class="cyber-terminal-footer">
+            <div class="terminal-header">
+                <div class="terminal-title">
+                    <i class="fa-solid fa-terminal"></i> CONSOLA DE EVENTOS // SYSTEM LOGS
+                </div>
+                <button class="terminal-clear" id="btn-clear-log" title="Limpiar consola">
+                    <i class="fa-solid fa-trash-can"></i> Limpiar
+                </button>
+            </div>
+            <div class="terminal-body" id="terminal-logs">
+                <div class="log-line system">[SYSTEM INITIALIZED] CyberToolkit cargado correctamente. Esperando órdenes...</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Leaflet JS for Map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Custom Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/dns.js"></script>
+    <script src="js/scanner.js"></script>
+    <script src="js/geoloc.js"></script>
+</body>
+</html>
