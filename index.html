@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="icon" href="./cibertoolicon.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CYBER-TOOLKIT // Security & Network Intelligence</title>
@@ -27,8 +26,8 @@
             <div class="brand">
                 <i class="fa-solid fa-shield-halved brand-icon"></i>
                 <div class="brand-text">
-                    <h1>CYBER<span class="highlight">TOOLKIT</span></h1>
-                    <p class="subtitle">NETWORK INTELLIGENCE & RECON DASHBOARD</p>
+                    <h1>CYBER<span class="highlight">TOOLKIT</span> <span style="font-size:0.75rem; color:var(--neon-cyan); border: 1px solid var(--neon-cyan); padding:2px 6px; border-radius:4px;">v2.0</span></h1>
+                    <p class="subtitle">SECURITY ASSESSMENT & RECON SUITE</p>
                 </div>
             </div>
             <div class="status-panel">
@@ -41,7 +40,7 @@
         <nav class="cyber-nav">
             <button class="nav-btn active" data-tab="tab-dns">
                 <i class="fa-solid fa-network-wired"></i>
-                <span>DNS & NSLOOKUP</span>
+                <span>DNS & DOH</span>
             </button>
             <button class="nav-btn" data-tab="tab-scanner">
                 <i class="fa-solid fa-radar"></i>
@@ -49,7 +48,23 @@
             </button>
             <button class="nav-btn" data-tab="tab-geoloc">
                 <i class="fa-solid fa-earth-americas"></i>
-                <span>IP GEOLOCATION</span>
+                <span>GEOLOCATION</span>
+            </button>
+            <button class="nav-btn" data-tab="tab-crypto">
+                <i class="fa-solid fa-key"></i>
+                <span>CRYPTO STUDIO</span>
+            </button>
+            <button class="nav-btn" data-tab="tab-passwords">
+                <i class="fa-solid fa-lock"></i>
+                <span>PASSWORDS</span>
+            </button>
+            <button class="nav-btn" data-tab="tab-cve">
+                <i class="fa-solid fa-bug"></i>
+                <span>CVE LOOKUP</span>
+            </button>
+            <button class="nav-btn" data-tab="tab-playbooks">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>PLAYBOOKS</span>
             </button>
         </nav>
 
@@ -64,7 +79,6 @@
                 </div>
 
                 <div class="grid-2col">
-                    <!-- Form Control -->
                     <div class="cyber-card">
                         <h3 class="card-title"><i class="fa-solid fa-sliders"></i> Configuración de Consulta</h3>
                         <form id="dns-form">
@@ -72,7 +86,7 @@
                                 <label for="dns-target">Domain or Hostname</label>
                                 <div class="input-wrapper">
                                     <i class="fa-solid fa-globe input-icon"></i>
-                                    <input type="text" id="dns-target" placeholder="ej. google.com, speedtest.net" required value="speedtest.net">
+                                    <input type="text" id="dns-target" placeholder="ej. google.com, tuid.telecom.com.ar" required value="tuid.telecom.com.ar">
                                 </div>
                             </div>
 
@@ -113,7 +127,6 @@
                         </form>
                     </div>
 
-                    <!-- DNS Results -->
                     <div class="cyber-card">
                         <h3 class="card-title"><i class="fa-solid fa-list-check"></i> Resultados de Registros DNS</h3>
                         <div id="dns-results" class="results-container">
@@ -143,7 +156,6 @@
                 </div>
 
                 <div class="grid-2col">
-                    <!-- Scanner Form -->
                     <div class="cyber-card">
                         <h3 class="card-title"><i class="fa-solid fa-crosshairs"></i> Parámetros de Escaneo</h3>
                         <form id="scanner-form">
@@ -190,7 +202,6 @@
                         </form>
                     </div>
 
-                    <!-- Scan Results & Progress -->
                     <div class="cyber-card">
                         <h3 class="card-title"><i class="fa-solid fa-chart-simple"></i> Estado del Escaneo</h3>
                         
@@ -223,7 +234,6 @@
                 </div>
 
                 <div class="grid-layout-geoloc">
-                    <!-- Form & Details -->
                     <div class="cyber-card">
                         <h3 class="card-title"><i class="fa-solid fa-location-dot"></i> Consultar Dirección IP</h3>
                         <form id="geoloc-form">
@@ -273,10 +283,225 @@
                         </div>
                     </div>
 
-                    <!-- Interactive Map -->
                     <div class="cyber-card map-card">
                         <h3 class="card-title"><i class="fa-solid fa-map-location-dot"></i> Mapa Global de Ubicación</h3>
                         <div id="leaflet-map" class="map-container"></div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- TAB 4: CRYPTO STUDIO (AES-256-GCM & SHA-256) -->
+            <section id="tab-crypto" class="tab-pane">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-key"></i> Web Crypto API Studio</h2>
+                    <p>Cifrado simétrico AES-256-GCM y generación de hashes criptográficos SHA-256/512 ejecutados 100% en el cliente.</p>
+                </div>
+
+                <div class="grid-2col">
+                    <!-- AES-256-GCM Encrypt & Decrypt -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-lock"></i> Cifrado AES-256-GCM</h3>
+                        <form id="crypto-encrypt-form">
+                            <div class="form-group">
+                                <label for="enc-plaintext">Texto Plano a Cifrar</label>
+                                <textarea id="enc-plaintext" rows="3" style="width:100%; background:rgba(5,10,20,0.7); border:1px solid rgba(0,243,255,0.25); color:white; padding:0.5rem; border-radius:6px; font-family:var(--font-mono);" placeholder="Ingresa el mensaje secreto..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="enc-passphrase">Contraseña Clave Maestra</label>
+                                <input type="text" id="enc-passphrase" placeholder="Contraseña de derivación PBKDF2" required>
+                            </div>
+                            <button type="submit" class="cyber-btn primary">
+                                <i class="fa-solid fa-lock"></i> CIFRAR CON AES-256-GCM
+                            </button>
+                        </form>
+                        <div class="form-group" style="margin-top:1rem;">
+                            <label>Resultado Cifrado (Base64)</label>
+                            <input type="text" id="enc-result-output" readonly placeholder="El texto cifrado aparecerá aquí..." style="color:var(--neon-green);">
+                        </div>
+                    </div>
+
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-unlock"></i> Descifrado AES-256-GCM & Hash Tool</h3>
+                        <form id="crypto-decrypt-form">
+                            <div class="form-group">
+                                <label for="dec-ciphertext">Texto Cifrado (Base64)</label>
+                                <input type="text" id="dec-ciphertext" placeholder="Pega el mensaje cifrado en Base64..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dec-passphrase">Contraseña Clave Maestra</label>
+                                <input type="text" id="dec-passphrase" placeholder="Contraseña de descifrado" required>
+                            </div>
+                            <button type="submit" class="cyber-btn secondary" style="width:100%;">
+                                <i class="fa-solid fa-unlock"></i> DESCIFRAR MENSAJE
+                            </button>
+                        </form>
+                        <div class="form-group" style="margin-top:1rem;">
+                            <label>Texto Descifrado</label>
+                            <input type="text" id="dec-result-output" readonly placeholder="El resultado descifrado aparecerá aquí..." style="color:var(--neon-cyan);">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hashing Box -->
+                <div class="cyber-card" style="margin-top:1.5rem;">
+                    <h3 class="card-title"><i class="fa-solid fa-hashtag"></i> Generador de Hashes SHA-256 & SHA-512</h3>
+                    <form id="crypto-hash-form" style="display:flex; gap:1rem; align-items:flex-end;">
+                        <div class="form-group" style="flex:1; margin-bottom:0;">
+                            <label for="hash-input-text">Texto para Calcular Hash</label>
+                            <input type="text" id="hash-input-text" placeholder="Ingresa cualquier texto o token..." required>
+                        </div>
+                        <button type="submit" class="cyber-btn primary">
+                            <i class="fa-solid fa-calculator"></i> CALCULAR HASHES
+                        </button>
+                    </form>
+
+                    <div style="margin-top:1rem; display:flex; flex-direction:column; gap:0.75rem;">
+                        <div>
+                            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">SHA-256:</span>
+                            <div id="hash-sha256-val" style="font-family:var(--font-mono); font-size:0.85rem; color:var(--neon-cyan); word-break:break-all; background:rgba(0,0,0,0.4); padding:0.5rem; border-radius:4px; border:1px solid rgba(0,243,255,0.2);">-</div>
+                        </div>
+                        <div>
+                            <span style="font-size:0.75rem; color:var(--text-muted); font-family:var(--font-mono);">SHA-512:</span>
+                            <div id="hash-sha512-val" style="font-family:var(--font-mono); font-size:0.85rem; color:var(--neon-blue); word-break:break-all; background:rgba(0,0,0,0.4); padding:0.5rem; border-radius:4px; border:1px solid rgba(0,168,255,0.2);">-</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- TAB 5: PASSWORDS & ENTROPY -->
+            <section id="tab-passwords" class="tab-pane">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-lock"></i> Password Entropy & Security Vault</h2>
+                    <p>Cálculo de entropía en bits, estimación de tiempo de crackeo por fuerza bruta y generador seguro CSPRNG.</p>
+                </div>
+
+                <div class="grid-2col">
+                    <!-- Password Analyzer -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-gauge-high"></i> Auditoría de Entropía</h3>
+                        <div class="form-group">
+                            <label for="pwd-test-input">Ingresa o Genera una Contraseña</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-key input-icon"></i>
+                                <input type="text" id="pwd-test-input" placeholder="Escribe para probar seguridad...">
+                            </div>
+                        </div>
+
+                        <div style="background:rgba(0,0,0,0.5); padding:1rem; border-radius:8px; border:1px solid rgba(0,243,255,0.2); display:flex; flex-direction:column; gap:0.75rem;">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span style="font-size:0.85rem; color:var(--text-muted); font-family:var(--font-mono);">Nivel de Entropía:</span>
+                                <span id="pwd-entropy-bits" style="font-weight:bold; color:var(--neon-cyan); font-family:var(--font-mono);">0 bits</span>
+                            </div>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar" id="pwd-score-bar" style="width: 0%; background: var(--neon-cyan);"></div>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.25rem;">
+                                <span style="font-size:0.8rem; color:var(--text-muted);">Tiempo Estimado de Crackeo (GPU):</span>
+                                <span id="pwd-crack-time" style="font-weight:bold; color:var(--text-bright); font-family:var(--font-mono);">0 segundos</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.25rem;">
+                                <span style="font-size:0.8rem; color:var(--text-muted);">Clasificación:</span>
+                                <span id="pwd-status-tag" class="port-status status-closed">EN ESPERA</span>
+                            </div>
+                        </div>
+
+                        <div id="pwd-warnings" style="margin-top:0.75rem; display:flex; flex-direction:column; gap:0.3rem;"></div>
+                    </div>
+
+                    <!-- Password Generator -->
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Generador Cibernético CSPRNG</h3>
+                        <div class="form-group">
+                            <label for="pwd-gen-length">Longitud de Contraseña (12 a 64)</label>
+                            <input type="number" id="pwd-gen-length" min="12" max="64" value="20">
+                        </div>
+                        <button type="button" class="cyber-btn primary" id="btn-gen-pwd" style="margin-top:1rem;">
+                            <i class="fa-solid fa-bolt"></i> GENERAR CONTRASEÑA SEGURA
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- TAB 6: CVE LOOKUP -->
+            <section id="tab-cve" class="tab-pane">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-bug"></i> CVE & Threat Intelligence Finder</h2>
+                    <p>Búsqueda en tiempo real de vulnerabilidades globales y scoring CVSS v3.1 por servicio o software.</p>
+                </div>
+
+                <div class="grid-2col">
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Buscar Vulnerabilidades</h3>
+                        <form id="cve-form">
+                            <div class="form-group">
+                                <label for="cve-query">Nombre del Software o Servicio</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-server input-icon"></i>
+                                    <input type="text" id="cve-query" placeholder="ej. openssh, nginx, apache, wordpress, mysql" required value="openssh">
+                                </div>
+                            </div>
+                            <button type="submit" class="cyber-btn primary">
+                                <i class="fa-solid fa-bug"></i> BUSCAR REGISTROS CVE
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="cyber-card">
+                        <h3 class="card-title"><i class="fa-solid fa-list-check"></i> Resultados de Vulnerabilidades (CVSS)</h3>
+                        <div id="cve-results" class="results-container">
+                            <div class="placeholder-msg">
+                                <i class="fa-solid fa-shield-virus"></i>
+                                <p>Ingresa un software (ej. openssh, nginx) y presiona "BUSCAR REGISTROS CVE".</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- TAB 7: PLAYBOOKS -->
+            <section id="tab-playbooks" class="tab-pane">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-clipboard-check"></i> Incident Response Playbooks</h2>
+                    <p>Guías interactivas de respuesta rápida ante incidentes de ciberseguridad corporativos.</p>
+                </div>
+
+                <div class="cyber-card" style="margin-bottom:1rem;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="font-family:var(--font-mono); color:var(--neon-cyan); font-weight:bold;">PROGRESO DEL PLAYBOOK</span>
+                        <span id="playbook-percent-text" style="font-family:var(--font-mono); color:var(--text-bright);">0% Completo</span>
+                    </div>
+                    <div class="progress-bar-wrapper" style="margin-top:0.5rem;">
+                        <div class="progress-bar" id="playbook-progress-bar" style="width: 0%;"></div>
+                    </div>
+                </div>
+
+                <div class="grid-2col">
+                    <!-- Ransomware Playbook -->
+                    <div class="cyber-card">
+                        <h3 class="card-title" style="color:var(--neon-red);"><i class="fa-solid fa-skull-crossbones"></i> 🚨 Playbook 1: Infección por Ransomware</h3>
+                        <div style="display:flex; flex-direction:column; gap:0.6rem;">
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>1. Aislar de inmediato la máquina de la red (Desconectar Ethernet/Wi-Fi).</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>2. Desactivar servicios de sincronización en la nube (Drive/OneDrive) para evitar propagación.</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>3. Identificar la variante de Ransomware leyendo la nota de rescate o extensión.</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>4. Notificar al equipo de SOC/CISO y preservar imagen de memoria RAM.</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>5. Restaurar desde respaldos aislados fuera de línea (Offline Backups).</span></label>
+                        </div>
+                    </div>
+
+                    <!-- Phishing Playbook -->
+                    <div class="cyber-card">
+                        <h3 class="card-title" style="color:var(--neon-orange);"><i class="fa-solid fa-fish-fins"></i> 🎣 Playbook 2: Compromiso de Credenciales (Phishing)</h3>
+                        <div style="display:flex; flex-direction:column; gap:0.6rem;">
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>1. Revocar la sesión activa y resetear la contraseña del usuario afectado.</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>2. Forzar la re-configuración de Autenticación de Doble Factor (MFA).</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>3. Bloquear la URL y dominio malicioso en el Firewall / Secure Email Gateway.</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>4. Buscar en logs de correo si otros usuarios recibieron el mismo mensaje.</span></label>
+                            <label class="cyber-checkbox"><input type="checkbox" class="playbook-checkbox"> <span>5. Auditar reglas de reenvío de correo automáticas creadas por el atacante.</span></label>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -294,7 +519,7 @@
                 </button>
             </div>
             <div class="terminal-body" id="terminal-logs">
-                <div class="log-line system">[SYSTEM INITIALIZED] CyberToolkit cargado correctamente. Esperando órdenes...</div>
+                <div class="log-line system">[SYSTEM INITIALIZED] CyberToolkit v2.0 cargado correctamente. Esperando órdenes...</div>
             </div>
         </footer>
     </div>
@@ -307,5 +532,9 @@
     <script src="js/dns.js"></script>
     <script src="js/scanner.js"></script>
     <script src="js/geoloc.js"></script>
+    <script src="js/crypto.js"></script>
+    <script src="js/passwords.js"></script>
+    <script src="js/cve.js"></script>
+    <script src="js/playbooks.js"></script>
 </body>
 </html>
